@@ -32,7 +32,7 @@ def restaurar_banco(ip_caixa, numero_caixa):
         conn = pyodbc.connect(conexao_banco)
         cursor = conn.cursor()
 
-        script_dir = os.path.join(os.getcwd(), "ScriptSQL")
+        script_dir = os.path.join(os.getcwd(), "modulos", "ScriptSQL")
 
         print("Excluindo banco PDV existente...")
         cursor.execute("IF DB_ID('PDV') IS NOT NULL DROP DATABASE PDV")

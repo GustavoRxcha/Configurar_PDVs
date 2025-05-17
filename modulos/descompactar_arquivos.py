@@ -8,7 +8,7 @@ def descompactar_arquivos(ssh_client, remote_path="/opt"):
         # Comandos para identificar e descompactar arquivos
         comandos = [
             "cd /opt && unzip Banco_PDV.zip",  # Descompacta o backup do banco
-            "cd /opt/pdv && rm -rf eschemas",  # Exclui a pasta 'eschemas'
+            "cd /opt/pdv && rm -rf schemas",  # Exclui a pasta 'schemas'
             "cd /opt/pdv && unzip Schemas.zip"  # Descompacta os schemas
         ]
 
