@@ -1,0 +1,20 @@
+# __pycache__ do Python
+__pycache__/
+*.py[cod]
+
+# Arquivos temporários e backups
+*.swp
+*.tmp
+
+# Arquivos do VSCode
+.vscode/
+
+# Arquivos de log
+
+# Banco de dados SQLite (caso utilize)
+*.sqlite3
+
+.env
+.venv/
+
+
