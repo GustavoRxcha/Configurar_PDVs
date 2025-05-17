@@ -1,4 +1,5 @@
 import paramiko
+from modulos.conexao_ssh import conectar_ssh
 
 def configurar_permissoes(ssh_client):
     

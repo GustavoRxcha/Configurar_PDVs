@@ -1,6 +1,5 @@
-# modulos/descompactar_arquivos.py
-
 import paramiko
+from modulos.conexao_ssh import conectar_ssh
 
 def descompactar_arquivos(ssh_client, remote_path="/opt"):
     

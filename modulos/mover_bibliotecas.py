@@ -1,4 +1,5 @@
 import paramiko
+from modulos.conexao_ssh import conectar_ssh
 
 def mover_bibliotecas(ssh_client, origem="/opt", destino="/usr/lib"):
     

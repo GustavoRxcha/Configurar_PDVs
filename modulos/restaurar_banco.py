@@ -1,5 +1,6 @@
 import pyodbc
 import os
+from modulos.conexao_ssh import conectar_ssh
 
 def executar_script(cursor, script_path, parametros=None):
 

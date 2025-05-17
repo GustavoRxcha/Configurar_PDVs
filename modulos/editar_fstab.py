@@ -1,4 +1,5 @@
 import paramiko
+from modulos.conexao_ssh import conectar_ssh
 
 def editar_fstab(ssh_client, ip_caixa, uf_filial):
     """

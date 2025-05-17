@@ -1,5 +1,5 @@
 from scp import SCPClient
-from conexao_ssh import conexao_ssh
+from modulos.conexao_ssh import conectar_ssh
 
 def transferir_arquivos_para_caixa(ssh_client, local_paths, remote_path="/opt"):
 
