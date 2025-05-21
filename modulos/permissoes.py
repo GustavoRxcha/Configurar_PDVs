@@ -1,25 +1,33 @@
 import paramiko
 from modulos.conexao_ssh import conectar_ssh
+import os
+from dotenv import load_dotenv
+import time
+
+load_dotenv()
+SSH_USER = os.getenv("SSH_USER")
+SSH_PASS = os.getenv("SSH_PASS")
 
 def configurar_permissoes(ssh_client):
     
     try:
-        comandos = [
-            "sudo chown -R prevenda.prevenda /opt",
-            "sudo chmod -R 777 /opt"
-        ]
 
-        for cmd in comandos:
-            stdin, stdout, stderr = ssh_client.exec_command(cmd)
-            erro = stderr.read().decode()
+        shell = ssh_client.invoke_shell()
 
-            if erro:
-                print(f"[ERRO] Comando '{cmd}' falhou: {erro}")
-                return False
-            else:
-                print(f"[OK] Comando '{cmd}' executado com sucesso.")
-        return True
+        shell.send("su root\n")
+        time.sleep(1)
+        shell.send("F@RM4C1A\n")
+        time.sleep(1)
+        shell.send("chown -R prevenda.prevenda /opt\n")
+        time.sleep(4)
+        shell.send("chmod -R 777 /opt\n")
+        time.sleep(4)
+
+        print("[OK] Executado comandos para dar permissão à pasta /opt\n")
+
+
+        shell.send("exit\n")
     
     except Exception as e:
-        print(f"[ERRO] Falha ao configurar permissões: {e}")
+        print(f"[ERRO] Falha ao configurar permissões: {e}\n")
         return False

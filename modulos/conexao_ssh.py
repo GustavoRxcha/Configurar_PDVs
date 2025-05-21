@@ -16,11 +16,11 @@ def conectar_ssh(ip: str):
             username=SSH_USER,
             password=SSH_PASS
         )
-        print(f"[OK] Conectado ao terminal {ip}")
+        print(f"[OK] Conectado ao terminal {ip}\n")
         return client
     
     except Exception as e:
-        print(f"[ERRO] Falha na conexão SSH com {ip}: {e}")
+        print(f"[ERRO] Falha na conexão SSH com {ip}: {e}\n")
         return None
 
 

@@ -1,27 +1,29 @@
 import paramiko
+import time
 from modulos.conexao_ssh import conectar_ssh
 
 def mover_bibliotecas(ssh_client, origem="/opt", destino="/usr/lib"):
     
     try:
-        # Lista de bibliotecas a serem movidas
-        bibliotecas = [
-            "libclisitef.so",
-            "libclisitef64.so",
-            "libemv64.so",
-            "libqrencode64.so"
-        ]
 
-        for lib in bibliotecas:
-            comando = f"mv {origem}/{lib} {destino}"
-            print(f"Executando comando: {comando}")
-            stdin, stdout, stderr = ssh_client.exec_command(comando)
-            erro = stderr.read().decode()
+        shell = ssh_client.invoke_shell()
 
-            if erro:
-                print(f"[ERRO] Falha ao mover '{lib}': {erro}")
-            else:
-                print(f"[OK] Biblioteca '{lib}' movida com sucesso.")
+        shell.send("su root\n")
+        time.sleep(1)
+        shell.send("F@RM4C1A\n")
+        time.sleep(1)
+        shell.send(f"mv /opt/libclisitef.so /usr/lib\n")
+        time.sleep(3)
+        shell.send(f"mv /opt/libclisitef64.so /usr/lib\n")
+        time.sleep(3)
+        shell.send(f"mv /opt/libemv64.so /usr/lib\n")
+        time.sleep(3)
+        shell.send(f"mv /opt/libqrencode64.so /usr/lib\n")
+        time.sleep(3)
+
+        print("[OK] Feito a movimentação das libs!\n")
+
+        shell.send("exit\n")
 
     except Exception as e:
-        print(f"[EXCEÇÃO] Erro durante a movimentação das bibliotecas: {e}")
+        print(f"[EXCEÇÃO] Erro durante a movimentação das bibliotecas: {e}\n")

@@ -1,25 +1,25 @@
 import paramiko
+import time
 from modulos.conexao_ssh import conectar_ssh
 
-def descompactar_arquivos(ssh_client, remote_path="/opt"):
-    
+def descompactar_arquivos(ssh_client):
+
     try:
-        # Comandos para identificar e descompactar arquivos
-        comandos = [
-            "cd /opt && unzip Banco_PDV.zip",  # Descompacta o backup do banco
-            "cd /opt/pdv && rm -rf schemas",  # Exclui a pasta 'schemas'
-            "cd /opt/pdv && unzip Schemas.zip"  # Descompacta os schemas
-        ]
 
-        for cmd in comandos:
-            print(f"[INFO] Executando comando: {cmd}")
-            stdin, stdout, stderr = ssh_client.exec_command(cmd)
-            erro = stderr.read().decode()
+        shell = ssh_client.invoke_shell()
 
-            if erro:
-                print(f"[ERRO] Falha ao executar '{cmd}': {erro}")
-            else:
-                print(f"[OK] Comando '{cmd}' executado com sucesso.")
+        shell.send("su root\n")
+        time.sleep(1)
+        shell.send("F@RM4C1A\n")
+        time.sleep(1)
+        shell.send("cd /opt/ && unzip -o Banco_PDV.zip\n")
+        time.sleep(5)
+        shell.send("cd /opt/pdv/ && unzip -o Schemas.zip\n")
+        time.sleep(5)
+
+        print("[OK] Feito a descompactação dos arquivos!\n")
+
+        shell.send("exit\n")
 
     except Exception as e:
-        print(f"[EXCEÇÃO] Erro durante descompactação: {e}")
+        print(f"[EXCEÇÃO] Erro durante descompactação: {e}\n")
