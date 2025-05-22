@@ -59,7 +59,7 @@ def excluir_banco_pdv(ip_caixa):
 
 #############################################################################################################################
 
-def restaurar_banco(ssh_client, ip_caixa, numero_caixa):
+def restaurar_banco(ssh_client, ip_caixa):
     
     try:
 
@@ -127,36 +127,37 @@ def restaurar_banco(ssh_client, ip_caixa, numero_caixa):
         ssh_client.close()
         print("Conexão SSH encerrada.\n")
 
-        try:
-            time.sleep(5)
-            conexao_banco = (
-                f"DRIVER={{ODBC Driver 17 for SQL Server}};"
-                f"SERVER={ip_caixa};"
-                f"DATABASE=PDV;"
-                f"UID=sa;"  # Substitua pelo usuário correto
-                f"PWD=ERPM@2017;"  # Substitua pela senha correta
-            )
-            conn = pyodbc.connect(conexao_banco, autocommit=True)  # Autocommit desativa transações
-            cursor = conn.cursor()
-            # Executar a stored procedure usp_restaura_banco_pdv
-            print("Executando a usp_restaura_banco_pdv...")
-            comando_sp = f"EXEC usp_restaura_banco_pdv 1, {numero_caixa}"
-            cursor.execute(comando_sp)
-            conn.commit()
-            print("[OK] Stored procedure usp_restaura_banco_pdv executada com sucesso.\n")
-            # Executar o comando "CTRL + T"
-            script_dir = os.path.join(os.getcwd(), "modulos", "ScriptSQL")
-            print("Executando comando 'CTRL + T'...")
-            executar_script(cursor, os.path.join(script_dir, "ctrl_t.sql"))
-            conn.commit()
-            print("Comando 'CTRL + T' executado.\n")
-
-            # Fechar conexão
-            cursor.close()
-            conn.close()
-
-        except Exception as e:
-            print(f"[EXCEÇÃO] Erro durante a execução da USP_RESTAURA_BANCO_PDV: {e}\n")
-
     except Exception as e:
         print(f"[EXCEÇÃO] Erro durante a restauração do banco de dados: {e}\n")
+
+def executar_usp(ip_caixa, numero_caixa):
+
+    try:
+        time.sleep(5)
+        conexao_banco = (
+            f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+            f"SERVER={ip_caixa};"
+            f"DATABASE=PDV;"
+            f"UID=sa;"  # Substitua pelo usuário correto
+            f"PWD=ERPM@2017;"  # Substitua pela senha correta
+        )
+        conn = pyodbc.connect(conexao_banco, autocommit=True)  # Autocommit desativa transações
+        cursor = conn.cursor()
+        # Executar a stored procedure usp_restaura_banco_pdv
+        print("Executando a usp_restaura_banco_pdv...")
+        comando_sp = f"EXEC usp_restaura_banco_pdv 1, {numero_caixa}"
+        cursor.execute(comando_sp)
+        conn.commit()
+        print("[OK] Stored procedure usp_restaura_banco_pdv executada com sucesso.\n")
+        # Executar o comando "CTRL + T"
+        script_dir = os.path.join(os.getcwd(), "modulos", "ScriptSQL")
+        print("Executando comando 'CTRL + T'...")
+        executar_script(cursor, os.path.join(script_dir, "ctrl_t.sql"))
+        conn.commit()
+        print("Comando 'CTRL + T' executado.\n")
+        # Fechar conexão
+        cursor.close()
+        conn.close()
+
+    except Exception as e:
+        print(f"[EXCEÇÃO] Erro durante a execução da USP_RESTAURA_BANCO_PDV: {e}\n")

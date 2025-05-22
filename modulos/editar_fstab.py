@@ -67,7 +67,7 @@ nasprocfit.intra.drogariasnissei.com.br:/nfs/procftp/{uf_filial.lower()} /mnt/pr
                     raise TimeoutError("Timeout ao executar o comando.")
                 time.sleep(0.5)
 
-            return output
+            return
 
         # Abrir uma sessão interativa
         shell = ssh_client.invoke_shell()

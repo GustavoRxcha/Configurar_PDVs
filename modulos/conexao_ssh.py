@@ -21,7 +21,7 @@ def conectar_ssh(ip: str):
     
     except Exception as e:
         print(f"[ERRO] Falha na conexão SSH com {ip}: {e}\n")
-        return None
+        return False
 
 
 def fechar_ssh(client):
